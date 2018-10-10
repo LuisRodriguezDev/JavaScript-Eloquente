@@ -1,16 +1,16 @@
-# Eloquent JavaScript
+# JavaScript Elocuente
 
-These are the sources used to build the third edition of Eloquent
-JavaScript (https://eloquentjavascript.net).
+Estas son las fuentes usadas para construir el libro de la
+tercera edición de JavaScript Elocuente (http://eloquentjavascript.net).
 
-Feedback welcome, in the form of issues and pull requests.
+Se agradece el feedback, en la forma de issues y pull requests.
 
-## Building
+## Construyendo el Libro
 
     npm install
     make html
 
-To build the PDF file:
+Para construir el archivo PDF:
 
-    apt-get install texlive texlive-xetex fonts-inconsolata fonts-symbola texlive-lang-chinese inkscape
+    apt-get install texlive texlive-xetex fonts-inconsolata fonts-symbola texlive-fonts-chinese
     make book.pdf
