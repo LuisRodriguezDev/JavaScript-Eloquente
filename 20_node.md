@@ -2,13 +2,13 @@
 
 # Node.js
 
-{{quote {author: "Master Yuan-Ma", title: "The Book of Programming", chapter: true}
+{{quote {author: "Maestro Yuan-Ma", title: "El Libro de la Programación", chapter: true}
 
-A student asked, 'The programmers of old used only simple machines and
-no programming languages, yet they made beautiful programs. Why do we
-use complicated machines and programming languages?'. Fu-Tzu replied,
-'The builders of old used only sticks and clay, yet they made
-beautiful huts.'
+Un estudiante preguntó, 'Los programadores de antaño usaban solo máquinas simples sin
+lenguajes de programación, y sin embargo hacían hermosos programas. ¿Porque nosotros
+usamos máquinas complicadas con lenguajes de programación?'. Fu-Tzu respondió,
+'Los constructores de antaño usaban solo palos y barro, y sin embargo hacían
+hermosas chozas.'
 
 quote}}
 
@@ -18,96 +18,96 @@ quote}}
 
 {{index "command line"}}
 
-So far, we have used the JavaScript language in a single environment:
-the browser. This chapter and the [next one](skillsharing) will
-briefly introduce ((Node.js)), a program that allows you to apply your
-JavaScript skills outside of the browser. With it, you can build
-anything from small command line tools to HTTP ((server))s that power
-dynamic ((website))s.
+Hasta ahora, hemos utilizado el lenguaje JavaScript en un solo entorno:
+el navegador. Este capítulo y el [siguiente](skillsharing)
+introduciran brevemente ((Node.js)), un programa que te permite aplicar tus
+habilidades de JavaScript fuera del navegador. Con él, puedes construir
+cualquier cosa, desde pequeñas herramientas de línea de comandos hasta
+((servidores)) HTTP, con la habilidad de potenciar ((sitios web)) dinámicos.
 
-These chapters aim to teach you the main concepts that Node.js uses
-and to give you enough information to write useful programs for it.
-They do not try to be a complete, or even a thorough, treatment of the
-platform.
+Estos capítulos intentarán enseñarte los conceptos principales que Node.js utiliza
+y darte la información suficiente como para que puedas escribir programas útiles en el.
+Estos capítulos no pretenden ser un tratamiento completo, ni exhaustivo, de la
+plataforma.
 
 {{if interactive
 
-Whereas you could run the code in previous chapters directly on these
-pages, because it was either raw JavaScript or written for the
-browser, the code samples in this chapter are written for Node and
-often won't run in the browser.
+Mientras que en capítulos anteriores podías ejecutar el código directamente
+en estas páginas, ya que era JavaScript puro o escrito específicamente para el
+navegador, los ejemplos de código en este capítulo están escritos para Node y
+a menudo no podrán ser ejecutados en el navegador.
 
 if}}
 
-If you want to follow along and run the code in this chapter, you'll
-need to install Node.js version 10.1 or higher. To do so, go to
-[_https://nodejs.org_](https://nodejs.org) and follow the installation
-instructions for your operating system. You can also find further
-((documentation)) for Node.js there.
+Si deseas seguir los ejemplos y ejecutar el código en este capítulo,
+es necesario que instales la versión 10.1 o superior de Node.js. Para hacerlo, ve a
+[_https://nodejs.org_](https://nodejs.org) y sigue las instrucciones de
+instalación para tu sistema operativo. Allí también puedes encontrar más
+((documentación)) para Node.js.
 
-## Background
+## Trasfondo
 
 {{index responsiveness, input}}
 
-One of the more difficult problems with writing systems that
-communicate over the ((network)) is managing input and ((output))—that
-is, the reading and writing of data to and from the network and ((hard
-drive)). Moving data around takes time, and ((scheduling)) it cleverly
-can make a big difference in how quickly a system responds to the user
-or to network requests.
+Uno de los problemas más difíciles al escribir sistemas que se
+comunican a través de la ((red)) es la gestión de entradas y ((salidas))—es
+decir, la lectura y escritura de datos, desde y hacia la red y ((discos
+duros)). Mover datos toma tiempo, y ((gestionar)) esto de manera inteligente
+puede hacer una gran diferencia en cuanto a la rapidez con la que un sistema
+responde al usuario o a solicitudes de red.
 
-In such programs, ((asynchronous programming)) is often helpful. It
-allows the program to send and receive data from and to multiple
-devices at the same time without complicated thread management and
-synchronization.
+En tales programas, la ((programación asíncrona)) a menudo es útil. Esta
+permite que el programa envíe y reciba datos desde y hacia múltiples
+dispositivos al mismo tiempo sin una complicada gestión y
+sincronización de [subprocesos](https://es.wikipedia.org/wiki/Hilo_(inform%C3%A1tica)).
 
 {{index "programming language", "Node.js", standard}}
 
-Node was initially conceived for the purpose of making asynchronous
-programming easy and convenient. JavaScript lends itself well to a
-system like Node. It is one of the few programming languages that does
-not have a built-in way to do in- and output. Thus, JavaScript could
-be fit onto Node's rather eccentric approach to in- and output without
-ending up with two inconsistent interfaces. In 2009, when Node was
-being designed, people were already doing callback-based programming
-in the browser, so the ((community)) around the language was used to
-an ((asynchronous programming)) style.
+Node fue concebido inicialmente con el propósito de hacer que la programación
+asíncrona fuera fácil y conveniente. JavaScript se presta bien a un
+sistema como Node. Es uno de los pocos lenguajes de programación que no
+tiene una forma predeterminada de realizar entradas y salidas. Por lo tanto,
+JavaScript podía adaptarse al enfoque bastante excéntrico con el que Node
+realiza entradas y salidas sin terminar con dos interfaces inconsistentes.
+En 2009, cuando Node estaba siendo diseñado, las personas ya estaban haciendo
+uso de la programación basada en devoluciones de llamadas en el navegador, por lo que
+la ((comunidad)) alrededor del lenguaje ya estaba acostumbrada a
+un estilo de ((programación asíncrona)).
 
-## The node command
+## El comando node
 
 {{index "node program"}}
 
-When ((Node.js)) is installed on a system, it provides a program
-called `node`, which is used to run JavaScript files. Say you have a
-file `hello.js`, containing this code:
+Cuando ((Node.js)) está instalado en un sistema, este proporciona un programa
+llamado `node`, que se puede utilizar para ejecutar archivos de JavaScript. Digamos
+que tienes un archivo llamado `hola.js`, el cual contiene este código:
 
 ```
-let message = "Hello world";
-console.log(message);
+let mensaje = "Hola mundo";
+console.log(mensaje);
 ```
 
-You can then run `node` from the ((command line)) like this to execute
-the program:
+Para ejecutar este programa, puedes hacer uso del comando `node` desde tu ((terminal)), de esta manera :
 
 ```{lang: null}
-$ node hello.js
-Hello world
+$ node hola.js
+Hola mundo
 ```
 
 {{index "console.log"}}
 
-The `console.log` method in Node does something similar to what it
-does in the browser. It prints out a piece of text. But in Node, the
-text will go to the process's ((standard output)) stream, rather than
-to a browser's ((JavaScript console)). When running `node` from the
-command line, that means you see the logged values in your
+El método `console.log` en Node hace algo similar a lo que este
+hace en el navegador. Este imprime una pieza de texto. Pero en Node, el
+texto irá al flujo del proceso de ((salida estándar)) del computador, en lugar de
+a la ((consola)) de un navegador. Esto significa, que cuando ejecutas `node`
+desde tu línea de comandos, ves los valores escritos en tu
 ((terminal)).
 
 {{index "node program", "read-eval-print loop"}}
 
-If you run `node` without giving it a file, it provides you with a
-prompt at which you can type JavaScript code and immediately see the
-result.
+Si ejecutas `node` sin darle un archivo, este te proporciona de una linea
+de comandos en la cual puedes escribir código JavaScript e inmediatamente
+ver los resultados.
 
 ```{lang: null}
 $ node
@@ -121,130 +121,134 @@ $
 
 {{index "process object", "global scope", [binding, global], "exit method", "status code"}}
 
-The `process` binding, just like the `console` binding, is available
-globally in Node. It provides various ways to inspect and manipulate
-the current program. The `exit` method ends the process and can be
-given an exit status code, which tells the program that started `node`
-(in this case, the command line shell) whether the program completed
-successfully (code zero) or encountered an error (any other code).
+La vinculación `process`, al igual que la vinculación `console`, está disponible
+de manera global en Node. Esta proporciona varias formas de inspeccionar y manipular
+el programa actual. El método `exit` termina el proceso actual, y este puede recibir
+un código de estado de salida, el cual le indica al programa que inició `node`
+(en este caso, la línea de comandos de nuestra computadora) si el programa
+fue completado con éxito (con el código cero) o si este encontró un error
+(cualquier otro código).
 
 {{index "command line", "argv property"}}
 
-To find the command line arguments given to your script, you can read
-`process.argv`, which is an array of strings. Note that it also
-includes the name of the `node` command and your script name, so the
-actual arguments start at index 2. If `showargv.js` contains the
-statement `console.log(process.argv)`, you could run it like this:
+Para encontrar los argumentos dados en la línea de comando a tu script, puedes leer
+`process.argv`, el cual es un array de strings. Ten en cuenta que este
+tambien incluye el nombre del comando `node` y el nombre de tu script, por lo que
+los argumentos reales comienzan a partir del índice 2. Si `mostrar_argumentos.js`
+contuviera la declaración `console.log(process.argv)`, podrías ejecutarlo de
+esta manera:
 
 ```{lang: null}
-$ node showargv.js one --and two
-["node", "/tmp/showargv.js", "one", "--and", "two"]
+$ node mostrar_argumentos.js uno --y dos
+["node", "/tmp/mostrar_argumentos.js", "uno", "--y", "dos"]
 ```
 
 {{index [binding, global]}}
 
-All the ((standard)) JavaScript global bindings, such as `Array`,
-`Math`, and `JSON`, are also present in Node's environment.
-Browser-related functionality, such as `document` or `prompt`, is not.
+Todas las vinculaciones globales ((estándar)) de JavaScript, como `Array`,
+`Math`, y `JSON`, están también presentes en el entorno de Node.
+Por el otro lado, funcionalidades relacionadas con el navegador,
+como `document` o `prompt`, no lo están.
 
-## Modules
+## Módulos
 
 {{index "Node.js", "global scope", "module loader"}}
 
-Beyond the bindings I mentioned, such as `console` and `process`,
-Node puts few additional bindings in the global scope. If you want to access
-built-in functionality, you have to ask the module system for it.
+Más allá de las vinculaciones que acaban de ser mencionadas, como `console` y `process`,
+Node no proporciona de muchas vinculaciones adicionales en el alcance global.
+Si quieres acceder a funcionalidades incorporadas, tendras que
+pedírselas al sistema de módulos.
 
 {{index "require function"}}
 
-The ((CommonJS)) module system, based on the `require` function, was
-described in [Chapter ?](modules#commonjs). This system is built into
-Node and is used to load anything from built-in ((module))s to
-downloaded ((package))s to ((file))s that are part of your own
-program.
+El sistema de módulos ((CommonJS)), basado en la función `require`, fue
+descrito en el [Capítulo 10](modulos#commonjs). Este sistema está integrado en
+Node y es utilizado para cargar cualquier cosa, desde ((módulo))s incorporados a
+((paquete))s descargados a ((archivo))s que son parte de nuestros propios
+programas.
 
 {{index [path, "file system"], "relative path", resolution}}
 
-When `require` is called, Node has to resolve the given string to an
-actual ((file)) that it can load. Pathnames that start with `/`,
-`./`, or `../` are resolved relative to the current module's path,
-where `.` stands for the current directory, `../` for one
-directory up, and `/` for the root of the file system. So if you ask
-for `"./graph"` from the file `/tmp/robot/robot.js`, Node will try to
-load the file `/tmp/robot/graph.js`.
+Cuando `require` es llamado, Node tiene que convertir el string dado en un
+((archivo)) real que este pueda cargar. Nombres de ruta que comienzan con `/`,
+`./`, o `../` son convertidos en relación a la ruta del módulo actual,
+donde `.` representa el directorio actual, `../` representa un
+directorio arriba del actual, y `/` representa la raíz del sistema de archivos. Así que si pides
+`"./grafo"` desde el archivo `/tmp/robot/robot.js`, Node intentará
+cargar el archivo `/tmp/robot/grafo.js`.
 
 {{index "index.js"}}
 
-The `.js` ((extension)) may be omitted, and Node will add it if such a
-file exists. If the required path refers to a ((directory)), Node will
-try to load the file named `index.js` in that directory.
+La ((extensión)) `.js` puede ser omitida, y Node la agregará si tal
+archivo existe. Si la ruta requerida se refiere a un ((directorio)), Node
+intentara cargar el archivo llamado `index.js` dentro de ese directorio.
 
 {{index "node_modules directory", directory}}
 
-When a string that does not look like a relative or absolute path is
-given to `require`, it is assumed to refer to either a built-in
-((module)) or a module installed in a `node_modules` directory. For
-example, `require("fs")` will give you Node's built-in file system
-module. And `require("robot")` might try to load the library found in
-`node_modules/robot/`. A common way to install such libraries is by
-using ((NPM)), which we'll come back to in a moment.
+Cuando un string que no parece ser una ruta relativa o absoluta es
+dada a `require`, se asume que nos estamos refiriendo a un ((módulo)) incorporado de Node
+o a un módulo instalado en el directorio `node_modules`. Por ejemplo,
+`require("fs")` te dará acceso al módulo de sistema de archivos
+integrado en Node. Y `require("robot")` podría intentar cargar una libreria
+que se encuentre en `node_modules/robot/`. Una forma común de instalar tales
+librerias es usando ((NPM)), al cual regresaremos en un momento.
 
 {{index "require function", "Node.js", "garble example"}}
 
-Let's set up a small project consisting of two files. The first one,
-called `main.js`, defines a script that can be called from the
-((command line)) to reverse a string.
+Vamos a armar un pequeño proyecto que consiste de dos archivos. El primero,
+llamado `main.js`, define un script que puede ser llamado desde la
+((línea de comandos)) para revertir un string.
 
 ```
-const {reverse} = require("./reverse");
+const {revertir} = require("./revertir");
 
-// Index 2 holds the first actual command line argument
-let argument = process.argv[2];
+// El indice 2 contiene el primer argumento dado en la linea de comandos
+let argumento = process.argv[2];
 
-console.log(reverse(argument));
+console.log(revertir(argumento));
 ```
 
 {{index reuse, "Array.from function", "join method"}}
 
-The file `reverse.js` defines a library for reversing strings, which
-can be used both by this command line tool and by other scripts that
-need direct access to a string-reversing function.
+El archivo `revertir.js` define una libreria para revertir strings, la cual
+puede ser utilizada tanto por esta herramienta de línea de comandos como por
+otros scripts que necesiten acceso directo a una función para revertir strings.
 
 ```
-exports.reverse = function(string) {
+exports.revertir = function(string) {
   return Array.from(string).reverse().join("");
 };
 ```
 
 {{index "exports object", CommonJS}}
 
-Remember that adding properties to `exports` adds them to the
-((interface)) of the module. Since Node.js treats files as
-((CommonJS)) ((module))s, `main.js` can take the exported `reverse`
-function from `reverse.js`.
+Recuerda que cuando agregamos propiedades a `exports`, las estamos agregando a la
+((interfaz)) del módulo. Dado que Node.js trata los archivos como
+((modulos)) de ((CommonJS)), `main.js` puede tener acceso a la función
+`revertir` la cual esta siendo exportada desde `revertir.js`.
 
-We can now call our tool like this:
+Ahora podemos llamar a nuestra herramienta de esta manera:
 
 ```{lang: null}
 $ node main.js JavaScript
 tpircSavaJ
 ```
 
-## Installing with NPM
+## Instalando con NPM
 
 {{index NPM, "Node.js", "npm program", library}}
 
-NPM, which was introduced in [Chapter ?](modules#modules_npm), is an
-online repository of JavaScript ((module))s, many of which are
-specifically written for Node. When you install Node on your computer,
-you also get the `npm` command, which you can use to interact with this
-repository.
+NPM, el cual fue introducido en el [Capítulo 10](modulos#modules_npm), es un
+repositorio en línea de ((módulo))s de JavaScript, muchos de los cuales son
+escritos específicamente para Node. Cuando instalas Node en tu computadora,
+también obtienes el comando `npm`, el cual puedes utilizar para interactuar
+con este repositorio.
 
 {{index "ini package"}}
 
-NPM's main use is ((download))ing packages. We saw the `ini` package in
-[Chapter ?](modules#modules_ini). We can use NPM to fetch and install
-that package on our computer.
+El principal uso de NPM es ((descargar)) paquetes. Vimos el paquete `ini` en el
+[Capítulo 10](modulos#modules_ini). Podemos usar NPM para buscar e instalar
+ese paquete en nuestra computadora
 
 ```{lang: null}
 $ npm install ini
@@ -261,37 +265,38 @@ $ node
 
 {{index "require function", "node_modules directory", "npm program"}}
 
-After running `npm install`, ((NPM)) will have created a directory
-called `node_modules`. Inside that directory will be an `ini`
-directory that contains the ((library)). You can open it and look at
-the code. When we call `require("ini")`, this library is loaded, and
-we can call its `parse` property to parse a configuration file.
+Después de correr `npm install`, ((NPM)) habrá creado un directorio
+llamado `node_modules`. Dentro de ese directorio, habrá un directorio `ini`
+el cual contiene la ((libreria)). Puedes abrirlo y leer el código.
+Cuando llamamos a `require("ini")`, esta libreria es cargada, y
+podemos llamar a su propiedad `parse` para analizar un archivo de configuración.
 
-By default NPM installs packages under the current directory, rather
-than in a central place. If you are used to other package managers,
-this may seem unusual, but it has advantages—it puts each application
-in full control of the packages it installs and makes it easier to
-manage versions and clean up when removing an application.
+Por defecto, NPM instala paquetes en el directorio actual, en lugar de
+en un lugar central. Si estás acostumbrado a otros gestores de paquetes,
+esto puede parecer inusual, pero tiene sus ventajas—esto le da a cada aplicación
+pleno control de los paquetes que instala y hace que sea más fácil
+administrar versiones y limpiar luego de remover una aplicación.
 
-### Package files
+### Archivos de paquetes
 
 {{index "package.json", dependency}}
 
-In the `npm install` example, you could see a ((warning)) about the
-fact that the `package.json` file did not exist. It is recommended to
-create such a file for each project, either manually or by running
-`npm init`. It contains some information about the project, such as
-its name and ((version)), and lists its dependencies.
+En el ejemplo de `npm install`, pudiste haber visto una ((advertencia)) acerca del
+hecho de que el archivo `package.json` no existía. Es recomendado
+crear un archivo de este tipo para cada proyecto, ya sea manualmente o ejecutando
+el comando `npm init`. Este archivo contiene algo de información sobre el proyecto, como
+su nombre y ((versión)), y enumera sus dependencias.
 
-The robot simulation from [Chapter ?](robot), as modularized in the
-exercise in [Chapter ?](modules#modular_robot), might have a
-`package.json` file like this:
+La simulación de robot del [Capítulo 7](robot), al ser modularizada en el
+ejercicio del [Capítulo 10](modulos#modular_robot), podría tener un archivo
+`package.json` como este:
+
 
 ```{lang: "application/json"}
 {
   "author": "Marijn Haverbeke",
   "name": "eloquent-javascript-robot",
-  "description": "Simulation of a package-delivery robot",
+  "description": "Simulación de un robot de entrega de paquetes",
   "version": "1.0.0",
   "main": "run.js",
   "dependencies": {
@@ -304,372 +309,370 @@ exercise in [Chapter ?](modules#modular_robot), might have a
 
 {{index "npm program", tool}}
 
-When you run `npm install` without naming a package to install, NPM
-will install the dependencies listed in `package.json`. When you
-install a specific package that is not already listed as a dependency,
-NPM will add it to `package.json`.
+Cuando ejecutas `npm install` sin nombrar un paquete a instalar, NPM
+instalará las dependencias listadas en `package.json`. Cuando tú
+instales un paquete específico que no esté listado como una dependencia,
+NPM lo agregará a `package.json`.
 
-### Versions
+### Versiones
 
 {{index "package.json", dependency, evolution}}
 
-A `package.json` file lists both the program's own ((version)) and
-versions for its dependencies. Versions are a way to deal with the
-fact that ((package))s evolve separately, and code written to work
-with a package as it existed at one point may not work with a later,
-modified version of the package.
+Un archivo `package.json` enumera tanto la ((versión)) del propio proyecto al que pertenece
+como a las versiones de sus dependencias. Las versiones son una manera de lidiar con el
+hecho de que los ((paquete))s evolucionan por separado, y el código escrito para funcionar
+con un paquete tal y como existía en un algun momento, podria no funcionar con una
+versión posterior y modificada del mismo paquete.
 
 {{index compatibility}}
 
-NPM demands that its packages follow a schema called _((semantic
-versioning))_, which encodes some information about which versions are
-_compatible_ (don't break the old interface) in the version number. A
-semantic version consists of three numbers, separated by periods, such
-as `2.3.0`. Every time new functionality is added, the middle number
-has to be incremented. Every time compatibility is broken, so that
-existing code that uses the package might not work with the new
-version, the first number has to be incremented.
+NPM exige que sus paquetes sigan un esquema llamado _((versionamiento semántico))_,
+que codifica cierta información acerca de qué versiones son
+_compatibles_ (no rompen la interfaz antigua) en el número de versión. Una
+versión semántica consiste de tres números, separados por puntos,
+como `2.3.0`. Cada vez que una nueva funcionalidad es añadida, el número del medio
+tiene que ser incrementado. Cada vez que se rompe la compatibilidad, por lo que
+el código existente que utiliza el paquete podría no funcionar con la nueva
+versión, el primer número tiene que ser incrementado.
 
 {{index "caret character"}}
 
-A caret character (`^`) in front of the version number for a
-dependency in `package.json` indicates that any version compatible
-with the given number may be installed. So, for example, `"^2.3.0"`
-would mean that any version greater than or equal to 2.3.0 and less
-than 3.0.0 is allowed.
+Un carácter de intercalación (`^`) delante del número de versión de una
+dependencia en `package.json` indica que cualquier versión compatible
+con el número dado puede ser instalada. Entonces, por ejemplo, `"^2.3.0"`
+significaría que cualquier versión mayor o igual a 2.3.0 y menor
+que 3.0.0 está permitida.
 
 {{index publishing}}
 
-The `npm` command is also used to publish new packages or new versions
-of packages. If you run `npm publish` in a ((directory)) that has a
-`package.json` file, it will publish a package with the name and
-version listed in the JSON file to the registry. Anyone can publish
-packages to NPM—though only under a package name that isn't in use yet since it would be
-somewhat scary if random people could update existing packages.
+El comando `npm` también se utiliza para publicar nuevos paquetes o versiones nuevas
+de paquetes. Si ejecutas `npm publish` en un ((directorio)) que tiene un
+archivo `package.json`, un paquete con el nombre y versión listada en el
+archivo JSON sera publicado en el registro de NPM. Cualquier persona puede publicar
+paquetes en NPM—aunque solo con un nombre de paquete que no este actualmente en uso, ya que sería
+algo atemorizante si personas aleatorias pudieran actualizar paquetes ya existentes.
 
-Since the `npm` program is a piece of software that talks to an open
-system—the package registry—there is nothing unique about what it
-does. Another program, `yarn`, which can be installed from the NPM
-registry, fills the same role as `npm` using a somewhat different
-interface and installation strategy.
+Dado que el programa `npm` es una pieza de software que se comunica con un
+sistema abierto—el registro de paquetes—no hay nada único acerca de lo que
+hace. Otro programa, `yarn`, el cual puede ser instalado desde el
+registro de NPM, cumple el mismo rol que `npm`, pero utilizando una interfaz
+algo diferente con una estrategia de instalación de paquetes distinta.
 
-This book won't delve further into the details of ((NPM)) usage. Refer
-to [_https://npmjs.org_](https://npmjs.org) for further documentation and a
-way to search for packages.
+Este libro no profundizará mas en los detalles del uso de ((NPM)). Chequea [_https://npmjs.org_](https://npmjs.org) para obtener más documentación y una
+manera de buscar paquetes.
 
-## The file system module
+## El módulo del sistema de archivos
 
 {{index directory, "fs package", "Node.js"}}
 
-One of the most commonly used built-in modules in Node is the `fs`
-module, which stands for _((file system))_. It exports functions for
-working with ((file))s and directories.
+Uno de los módulos incorporados más utilizados en Node es el módulo `fs`,
+que significa _((file system))_ ("sistema de archivos" en español).
+Este exporta funciones para trabajar con ((archivo))s y directorios.
 
 {{index "readFile function", "callback function"}}
 
-For example, the function called `readFile` reads a file
-and then calls a callback with the file's contents.
+Por ejemplo, la función llamada `readFile` ("leerArchivo") lee un archivo
+y luego ejecuta una devolución de llamada con el contenido del archivo.
 
 ```
 let {readFile} = require("fs");
-readFile("file.txt", "utf8", (error, text) => {
+readFile("archivo.txt", "utf8", (error, texto) => {
   if (error) throw error;
-  console.log("The file contains:", text);
+  console.log("El archivo contiene:", texto);
 });
 ```
 
 {{index "Buffer class"}}
 
-The second argument to `readFile` indicates the _((character
-encoding))_ used to decode the file into a string. There are several
-ways in which ((text)) can be encoded to ((binary data)), but most
-modern systems use ((UTF-8)). So unless you have reasons to believe
-another encoding is used, pass `"utf8"` when reading a text file. If
-you do not pass an encoding, Node will assume you are interested in
-the binary data and will give you a `Buffer` object instead of a
-string. This is an ((array-like object)) that contains numbers
-representing the bytes (8-bit chunks of data) in the files.
+El segundo argumento dado a `readFile` indica la _((codificación de caracteres))_
+a utilizar para decodificar el archivo en un string. Existen varias
+formas en las que un ((texto)) puede codificarse en ((datos binarios)), pero la mayoría
+de los sistemas modernos usan ((UTF-8)). Así que, a menos que tengas razones para creer
+que otra codificación esta siendo utilizada, pasa el argumento `"utf8"` al leer
+un archivo de texto. Si no pasas una codificación, Node asumirá que estás interesado en
+los datos binarios y te dará un objeto `Buffer` en lugar de un
+string. Este es un ((objeto similar a un array)), el cual contiene números
+representando los bytes (trozos de datos de 8-bits) en los archivos.
 
 ```
 const {readFile} = require("fs");
-readFile("file.txt", (error, buffer) => {
+readFile("archivo.txt", (error, buffer) => {
   if (error) throw error;
-  console.log("The file contained", buffer.length, "bytes.",
-              "The first byte is:", buffer[0]);
+  console.log("El archivo contiene", buffer.length, "bytes.",
+              "El primer byte es:", buffer[0]);
 });
 ```
 
 {{index "writeFile function", "file system"}}
 
-A similar function, `writeFile`, is used to write a ((file)) to disk.
+Una función similar, `writeFile` ("escribirArchivo"), es utilizada para escribir un ((archivo)) en el disco duro.
 
 ```
 const {writeFile} = require("fs");
-writeFile("graffiti.txt", "Node was here", err => {
-  if (err) console.log(`Failed to write file: ${err}`);
-  else console.log("File written.");
+writeFile("graffiti.txt", "Node estuvo aqui", err => {
+  if (err) console.log(`Error al escribir archivo: ${err}`);
+  else console.log("Archivo escrito.");
 });
 ```
 
 {{index "Buffer class", "character encoding"}}
 
-Here it was not necessary to specify the encoding—`writeFile` will
-assume that when it is given a string to write, rather than a `Buffer`
-object, it should write it out as text using its default character
-encoding, which is ((UTF-8)).
+Aquí no fue necesario especificar la codificación—`writeFile` asumira que
+cuando se le da un string a escribir, en lugar de un objeto `Buffer`,
+este debe ser escrito como texto utilizando su codificación de caracteres
+por defecto, la cual es ((UTF-8)).
 
 {{index "fs package", "readdir function", "stat function", "rename function", "unlink function"}}
 
-The `fs` module contains many other useful functions: `readdir` will
-return the ((file))s in a ((directory)) as an array of strings, `stat`
-will retrieve information about a file, `rename` will rename a file,
-`unlink` will remove one, and so on. See the documentation at
-[_https://nodejs.org_](https://nodejs.org) for specifics.
+El módulo `fs` contiene muchas otras funciones útiles: `readdir` ("leerDirectorio")
+retornara los ((archivo))s en un ((directorio)) como un array de strings, `stat` ("estatus")
+te dara información acerca de un archivo, `rename` ("renombrar") cambiará el nombre de un archivo,
+`unlink` ("desenlazar") eliminará uno, y así sucesivamente. Lee la documentación en
+[_https://nodejs.org_](https://nodejs.org) para obtener detalles mas específicos.
 
 {{index "asynchronous programming", "Node.js", "error handling", "callback function"}}
 
-Most of these take a callback function as the last parameter, which
-they call either with an error (the first argument) or with a successful
-result (the second). As we saw in [Chapter ?](async), there are
-downsides to this style of programming—the biggest one being that
-error handling becomes verbose and error-prone.
+La mayoría de estas toman una función de devolución de llamada como el último parámetro, la
+cual es llamada ya sea con un error (el primer argumento) o con un resultado exitoso
+(el segundo). Como vimos en el [Capítulo 11](async), hay
+desventajas con este estilo de programación—el más grande es que
+el manejo de errores se vuelve mas verboso y propenso a errores.
 
 {{index "Promise class", "promises package"}}
 
-Though promises have been part of JavaScript for a while, at the time
-of writing their integration into Node.js is still a work in progress.
-There is an object `promises` exported from the `fs` package since
-version 10.1 that contains most of the same functions as `fs` but
-uses promises rather than callback functions.
+Aunque las promesas han sido parte de JavaScript por un tiempo, al momento
+de escribir este libro, su integración con Node.js sigue siendo un trabajo en progreso.
+Hay un objeto `promises` ("promesas") exportado desde el paquete `fs` a partir de
+la versión 10.1 de Node, que contiene la mayoría de las mismas funciones que se encuentran
+en `fs` pero utilizando promesas en lugar de funciones de devolución de llamada.
 
 ```
 const {readFile} = require("fs").promises;
-readFile("file.txt", "utf8")
-  .then(text => console.log("The file contains:", text));
+readFile("archivo.txt", "utf8")
+  .then(text => console.log("El archivo contiene:", text));
 ```
 
 {{index "synchronous programming", "fs package", "readFileSync function"}}
 
-Sometimes you don't need asynchronicity, and it just gets in the way.
-Many of the functions in `fs` also have a synchronous variant, which
-has the same name with `Sync` added to the end. For example, the
-synchronous version of `readFile` is called `readFileSync`.
+Algunas veces no se necesita asincronicidad, y esta solo se interpone en el camino.
+Muchas de las funciones en `fs` también tienen una variante síncrona, la cual
+tiene el mismo nombre pero con `Sync` agregado al final. Por ejemplo, la
+versión síncrona de `readFile` es llamada `readFileSync`.
 
 ```
 const {readFileSync} = require("fs");
-console.log("The file contains:",
-            readFileSync("file.txt", "utf8"));
+console.log("El archivo contiene:",
+            readFileSync("archivo.txt", "utf8"));
 ```
 
 {{index optimization, performance, blocking}}
 
-Do note that while such a synchronous operation is being performed,
-your program is stopped entirely. If it should be responding to the
-user or to other machines on the network, being stuck on a synchronous
-action might produce annoying delays.
+Ten en cuenta que mientras se realiza una operación síncrona,
+tu programa se detiene por completo. Si este debería estar respondiendo a
+usuarios o a otras máquinas en la red, estar atascado en una acción síncrona
+puede producir retrasos molestos.
 
-## The HTTP module
+## El módulo HTTP
 
 {{index "Node.js", "http package"}}
 
-Another central module is called `http`. It provides functionality for
-running ((HTTP)) ((server))s and making HTTP ((request))s.
+Otro módulo central es llamado `http`. Este proporciona funcionalidad para
+ejecutar ((servidores)) ((HTTP)) y realizar ((solicitudes)) HTTP.
 
 {{index "listening (TCP)", "listen method", "createServer function"}}
 
-This is all it takes to start an HTTP server:
+Esto es todo lo que se necesita para iniciar un servidor HTTP:
 
 ```
 const {createServer} = require("http");
-let server = createServer((request, response) => {
-  response.writeHead(200, {"Content-Type": "text/html"});
-  response.write(`
-    <h1>Hello!</h1>
-    <p>You asked for <code>${request.url}</code></p>`);
-  response.end();
+let servidor = createServer((solicitud, respuesta) => {
+  respuesta.writeHead(200, {"Content-Type": "text/html"});
+  respuesta.write(`
+    <h1>Hola!</h1>
+    <p>Pediste por <code>${solicitud.url}</code></p>`);
+  respuesta.end();
 });
-server.listen(8000);
-console.log("Listening! (port 8000)");
+servidor.listen(8000);
+console.log("Escuchando! (en el puerto 8000)");
 ```
 
 {{index port, localhost}}
 
-If you run this script on your own machine, you can point your web
-((browser)) at
-[_http://localhost:8000/hello_](http://localhost:8000/hello) to make a
-request to your server. It will respond with a small HTML page.
+Si ejecutas este script en tu propia máquina, puedes ingresar la
+dirección [_http://localhost:8000/hola_](http://localhost:8000/hola) en tu
+((navegador)) web para realizar una solicitud a tu servidor.
+Este te responderá con una pequeña página HTML.
 
 {{index "createServer function", HTTP}}
 
-The function passed as argument to `createServer` is called every time
-a client connects to the server. The `request` and `response` bindings
-are objects representing the incoming and outgoing data. The first
-contains information about the ((request)), such as its `url` property,
-which tells us to what URL the request was made.
+La función pasada como argumento a `createServer` ("crearServidor") es llamada
+cada vez que un cliente se conecta al servidor. Las vinculaciones `solicitud` y `respuesta`
+son objetos que representan los datos entrantes y salientes. El primero
+contiene información acerca de la ((solicitud)), como su propiedad `url`,
+lo que nos dice hacia qué URL se realizó la solicitud.
 
-So, when you open that page in your browser, it sends a request to your
-own computer. This causes the server function to run and send back a
-response, which you can then see in the browser.
+Asi que, cuando abres esa página en tu navegador, este envía una solicitud a tu
+propia computadora. Esto causa que la función del servidor se ejecute y envíe una
+respuesta, que luego puedes ver en el navegador.
 
 {{index "200 (HTTP status code)", "Content-Type header", "writeHead method"}}
 
-To send something back, you call methods on the `response` object. The
-first, `writeHead`, will write out the ((response)) ((header))s (see
-[Chapter ?](http#headers)). You give it the status code (200 for "OK"
-in this case) and an object that contains header values. The example
-sets the `Content-Type` header to inform the client that we'll be
-sending back an HTML document.
+Para enviar algo de vuelta, llamas a los métodos en el objeto `respuesta`. El
+primero, `writeHead` ("escribirCabeza"), escribirá los ((encabezado))s de respuesta
+(ver [Capítulo 18](http#headers)). Le das el código de estado (200 para "OK"
+en este caso) y un objeto que contiene los valores de encabezado. El ejemplo
+establece el encabezado `Content-Type` para informarle al cliente que estaremos
+retornando un documento HTML.
 
 {{index "writable stream", "body (HTTP)", stream, "write method", "end method"}}
 
-Next, the actual response body (the document itself) is sent with
-`response.write`. You are allowed to call this method multiple times
-if you want to send the response piece by piece, for example to stream
-data to the client as it becomes available. Finally, `response.end`
-signals the end of the response.
+Luego, el cuerpo de la respuesta real (el documento en sí mismo) es enviado con
+`respuesta.write`. Es permitido que llames a este método varias veces
+si deseas enviar la respuesta pieza por pieza, por ejemplo, para transmitir
+datos al cliente a medida que estos estén disponibles. Finalmente, `respuesta.end`
+señala el final de la respuesta.
 
 {{index "listen method"}}
 
-The call to `server.listen` causes the ((server)) to start waiting for
-connections on ((port)) 8000. This is why you have to connect
-to _localhost:8000_ to speak to this server, rather than just
-_localhost_, which would use the default port 80.
+La llamada a `servidor.listen` hace que el ((servidor)) comience a esperar por
+conexiones en el ((puerto)) 8000. Esta es la razón por la cual tienes que conectarte
+a _localhost:8000_ para comunicarte con este servidor, en lugar de solo
+_localhost_, el cual usaría el puerto predeterminado 80.
 
 {{index "Node.js", kill}}
 
-When you run this script, the process just sits there and waits. When
-a script is listening for events—in this case, network
-connections—`node` will not automatically exit when it reaches the end
-of the script. To close it, press [control]{keyname}-C.
+Cuando ejecutas este script, el proceso simplemente se queda ahí y espera. Cuando
+un script esta escuchando por eventos—en este caso, conexiones de
+red—`node` no terminara automáticamente cuando llegue al final
+del script. Para terminar el proceso, debes presionar [control]{keyname}-C.
 
-A real web ((server)) usually does more than the one in the example—it
-looks at the request's ((method)) (the `method` property) to see what
-action the client is trying to perform and looks at the request's ((URL)) to
-find out which resource this action is being performed on. We'll see a
-more advanced server [later in this chapter](node#file_server).
+Un ((servidor)) web real generalmente hace más que el del ejemplo—este
+observa el metodo de la solicitud (la propiedad `method`) para ver qué
+acción el cliente está intentando realizar y observa la ((URL)) de la solicitud para
+averiguar en qué recurso se está realizando esta acción. Veremos un
+servidor más avanzado [más adelante en este capítulo](node#file_server).
 
 {{index "http package", "request function"}}
 
-To act as an ((HTTP)) _((client))_, we can use the `request` function
-in the `http` module.
+Para actuar como un _((cliente))_ ((HTTP)), podemos usar la función `request` ("solicitud")
+en el módulo `http`.
 
 ```
 const {request} = require("http");
-let requestStream = request({
+let flujoSolicitud = request({
   hostname: "eloquentjavascript.net",
   path: "/20_node.html",
   method: "GET",
   headers: {Accept: "text/html"}
-}, response => {
-  console.log("Server responded with status code",
-              response.statusCode);
+}, respuesta => {
+  console.log("El servidor respondió con el código de estado",
+              respuesta.statusCode);
 });
-requestStream.end();
+flujoSolicitud.end();
 ```
 
 {{index "Node.js", "callback function", "readable stream"}}
 
-The first argument to `request` configures the request, telling Node
-what server to talk to, what path to request from that server, which
-method to use, and so on. The second argument is the function that
-should be called when a response comes in. It is given an object that
-allows us to inspect the response, for example to find out its status
-code.
+El primer argumento a `request` configura la solicitud, indicando a Node
+con qué servidor hablar, qué ruta solicitar de ese servidor, cuál
+método a utilizar, y así sucesivamente. El segundo argumento es la función que
+debe llamarse cuando entra una respuesta. A esta se le da un objeto que
+nos permite inspeccionar la respuesta, por ejemplo, para averiguar su código de estado.
 
 {{index "GET method", "write method", "end method", "writable stream", "request function"}}
 
-Just like the `response` object we saw in the server, the object
-returned by `request` allows us to ((stream)) data into the
-((request)) with the `write` method and finish the request with the
-`end` method. The example does not use `write` because `GET` requests
-should not contain data in their request body.
+Al igual que el objeto `respuesta` que vimos en el servidor, el objeto
+retornado por `request` nos permite ((transmitir)) datos hacia la
+((solicitud)) con el método `write` y finalizar la solicitud con el
+método `end`. El ejemplo no usa `write` ya que las solicitudes `GET`
+no deben contener datos en su cuerpo de solicitud.
 
 {{index HTTPS, "https package", "request function"}}
 
-There's a similar `request` function in the `https` module that
-can be used to make requests to `https:` URLs.
+Hay una función similar de `request` en el módulo `https` que
+se puede utilizar para realizar solicitudes a URLs que utilizen `https:`.
 
 {{index "fetch function", "Promise class", "node-fetch package"}}
 
-Making requests with Node's raw functionality is rather verbose.
-There are much more convenient wrapper packages available on NPM. For
-example, `node-fetch` provides the promise-based `fetch` interface that
-we know from the browser.
+Hacer solicitudes con la funcionalidad cruda de Node es bastante verboso.
+Hay paquetes disponibles en NPM para hacer esto de maneras mucho más convenientes.
+Por ejemplo, `node-fetch` proporciona la interfaz `fetch` basada en promesas
+que conocemos por el navegador.
 
-## Streams
+## Flujos
 
 {{index "Node.js", stream, "writable stream"}}
 
-We have seen two instances of writable streams in the HTTP
-examples—namely, the response object that the server could write to
-and the request object that was returned from `request`.
+Hemos visto dos instancias de flujos escribibles en los ejemplos de HTTP—es
+decir, el objeto de respuesta en el que el servidor podría escribir
+y el objeto de solicitud que fue devuelto desde `request`.
 
 {{index "callback function", "asynchronous programming", "write method", "end method", "Buffer class"}}
 
-_Writable streams_ are a widely used concept in Node. Such objects have
-a `write` method that can be passed a string or a `Buffer` object to
-write something to the stream. Their `end` method closes the stream
-and optionally takes a value to write to the stream before
-closing. Both of these methods can also be given a callback as an
-additional argument, which they will call when the writing or closing
-has finished.
+Los _flujos escribibles_ son un concepto ampliamente utilizado en Node. Tales objetos poseen
+de un método `write` al que se le puede pasar un string o un objeto `Buffer` para
+escribir algo hacia el flujo. Su método `end` cierra el flujo
+y opcionalmente toma un valor para escribirlo en el flujo antes
+del cierre. Ambos de estos métodos también pueden recibir una devolución de llamada como
+un argumento adicional, al que llamarán cuando la escritura o el cierre
+haya terminado.
 
 {{index "createWriteStream function", "writeFile function"}}
 
-It is possible to create a writable stream that points at a ((file))
-with the `createWriteStream` function from the `fs` module. Then you
-can use the `write` method on the resulting object to write the file
-one piece at a time, rather than in one shot as with `writeFile`.
+Es posible crear un flujo escribible que apunte a un ((archivo))
+con la función `createWriteStream` ("crearFlujoEscribible") del módulo `fs`. Tu entonces
+puedes usar el método `write` en el objeto resultante para escribir en el archivo
+una pieza a la vez, en lugar de hacerlo de una sola vez como se hace con `writeFile`.
 
 {{index "createServer function", "request function", "event handling", "readable stream"}}
 
-Readable ((stream))s are a little more involved. Both the `request`
-binding that was passed to the HTTP server's callback and the
-`response` binding passed to the HTTP client's callback are readable
-streams—a server reads requests and then writes responses, whereas a
-client first writes a request and then reads a response. Reading from
-a stream is done using event handlers, rather than methods.
+Los ((flujo))s legibles son un poco más complicados. Tanto la vinculación `solicitud`
+que se pasó a la devolución de llamada del servidor HTTP, como la vinculación
+`respuesta` que fue pasada a la devolución de llamada del cliente HTTP son flujos
+legibles—un servidor lee las solicitudes y luego escribe las respuestas, mientras que
+el cliente primero escribe una solicitud y luego lee una respuesta. Leer de
+un flujo se hace utilizando controladores de eventos, en lugar de métodos.
 
 {{index "on method", "addEventListener method"}}
 
-Objects that emit events in Node have a method called `on` that is
-similar to the `addEventListener` method in the browser. You give it
-an event name and then a function, and it will register that function
-to be called whenever the given event occurs.
+Los objetos que emiten eventos en Node tienen un método llamado `on` que es
+similar al método `addEventListener` en el navegador. Tu le das
+un nombre de evento y luego una función, y registrará esa función
+para que sea llamada siempre que el evento dado ocurra.
 
 {{index "createReadStream function", "data event", "end event", "readable stream"}}
 
-Readable ((stream))s have `"data"` and `"end"` events. The first is
-fired every time data comes in, and the second is called whenever the
-stream is at its end. This model is most suited for _streaming_ data that
-can be immediately processed, even when the whole document isn't
-available yet. A file can be read as a readable stream by using the
-`createReadStream` function from `fs`.
+Los ((flujo))s legibles poseen los eventos `"data"` y `"end"`. El primero
+se dispara cada vez que entran datos, y el segundo es llamado cada vez que
+el flujo se encuentra en su final. Este modelo es el más adecuado para _transmitir_ datos que
+puedan ser procesados inmediatamente, incluso cuando el documento completo no este
+disponible aún. Un archivo puede ser leído como un flujo legible al usar
+la función `createReadStream` ("crearFlujoLegible") de `fs`.
 
 {{index "upcasing server example", capitalization, "toUpperCase method"}}
 
-This code creates a ((server)) that reads request bodies and streams
-them back to the client as all-uppercase text:
+Este código crea un ((servidor)) que lee los cuerpos de solicitud y los transmite
+de vuelta al cliente como texto en mayúsculas:
 
 ```
 const {createServer} = require("http");
-createServer((request, response) => {
-  response.writeHead(200, {"Content-Type": "text/plain"});
-  request.on("data", chunk =>
-    response.write(chunk.toString().toUpperCase()));
-  request.on("end", () => response.end());
+createServer((solicitud, respuesa) => {
+  respuesa.writeHead(200, {"Content-Type": "text/plain"});
+  solicitud.on("data", pedazo =>
+    respuesa.write(pedazo.toString().toUpperCase()));
+  solicitud.on("end", () => respuesa.end());
 }).listen(8000);
 ```
 
 {{index "Buffer class", "toString method"}}
 
-The `chunk` value passed to the data handler will be a binary
-`Buffer`. We can convert this to a string by decoding it as UTF-8
-encoded characters with its `toString` method.
+El valor `pedazo` pasado al manejador de datos será un `Buffer` binario.
+Podemos convertir esto en un string al decodificarlo como caracteres codificados
+en UTF-8 al hacer uso de su método `toString`.
 
-The following piece of code, when run with the uppercasing server
-active, will send a request to that server and write out the response
-it gets:
+La siguiente pieza de código, cuando se ejecuta con el servidor de convertir
+en mayúsculas activo, enviará una solicitud a ese servidor y escribirá la respuesta
+que recibe:
 
 ```
 const {request} = require("http");
@@ -677,181 +680,183 @@ request({
   hostname: "localhost",
   port: 8000,
   method: "POST"
-}, response => {
-  response.on("data", chunk =>
+}, respuesta => {
+  respuesta.on("data", chunk =>
     process.stdout.write(chunk.toString()));
-}).end("Hello server");
-// → HELLO SERVER
+}).end("Hola servidor");
+// → HOLA SERVIDOR
 ```
 
 {{index "stdout property", "standard output", "writable stream", "console.log"}}
 
-The example writes to `process.stdout` (the process's standard output,
-which is a writable stream) instead of using `console.log`. We can't
-use `console.log` because it adds an extra newline character after
-each piece of text that it writes, which isn't appropriate here since
-the response may come in as multiple chunks.
+El ejemplo escribe a `process.stdout` (la salida estándar del proceso,
+que es un flujo escribible) en lugar de usar `console.log`. No podemos
+use `console.log` ya que este agrega un caracter de nueva linea adicional despues
+de cada pieza de texto que escribe, lo que no es apropiado aquí ya que
+la respuesta puede venir en múltiples pedazos.
 
 {{id file_server}}
 
-## A file server
+## Un servidor de archivos
 
 {{index "file server example", "Node.js"}}
 
-Let's combine our newfound knowledge about ((HTTP)) ((server))s and
-working with the ((file system)) to create a bridge between the two:
-an HTTP server that allows ((remote access)) to a file system. Such a
-server has all kinds of uses—it allows web applications to store and
-share data, or it can give a group of people shared access to a bunch of
-files.
+Vamos a combinar nuestro nuevo conocimiento acerca de como crear ((servidor))es ((HTTP))
+con nuestro conocimiento acerca de como funciona el ((sistema de archivos))
+para construir un puente entre los dos:
+un servidor HTTP que permite ((acceso remoto)) a un sistema de archivos. Un
+servidor como este tiene todo tipo de usos—permite que aplicaciones web almacenen y
+compartan datos, o le puede dar a un grupo de personas acceso compartido a un montón de
+archivos.
 
 {{index [path, URL], "GET method", "PUT method", "DELETE method"}}
 
-When we treat ((file))s as HTTP ((resource))s, the HTTP methods `GET`,
-`PUT`, and `DELETE` can be used to read, write, and delete the files,
-respectively. We will interpret the path in the request as the path of
-the file that the request refers to.
+Cuando tratamos ((archivo))s como ((recurso))s HTTP, los métodos HTTP `GET`,
+`PUT` y `DELETE` pueden ser usados para leer, escribir y eliminar archivos,
+respectivamente. Interpretaremos la ruta en la solicitud como la ruta del
+archivo al que la solicitud se esta intentado referir.
 
 {{index [path, "file system"], "relative path"}}
 
-We probably don't want to share our whole file system, so we'll
-interpret these paths as starting in the server's working
-((directory)), which is the directory in which it was started. If I
-ran the server from `/tmp/public/` (or `C:\tmp\public\` on Windows),
-then a request for `/file.txt` should refer to `/tmp/public/file.txt`
-(or `C:\tmp\public\file.txt`).
+Ya que probablemente no queremos compartir todo nuestro sistema de archivos,
+interpretaremos estas rutas como los comienzos en el ((directorio))
+en el cual funciona el servidor, que corresponderia al directorio en el que se inició
+este. Si yo ejecutó el servidor desde `/tmp/public/`
+(o `C:\tmp\public\` en Windows), entonces una solicitud por `/archivo.txt`
+deberia referirse a `/tmp/public/archivo.txt` (o `C:\tmp\public\archivo.txt`).
 
 {{index "file server example", "Node.js", "methods object", "Promise class"}}
 
-We'll build the program piece by piece, using an object called
-`methods` to store the functions that handle the various HTTP methods.
-Method handlers are `async` functions that get the request object as
-argument and return a promise that resolves to an object that
-describes the response.
+Construiremos el programa pieza por pieza, usando un objeto llamado
+`metodos` para almacenar las funciones que manejan los diversos métodos HTTP.
+Los manejadores de métodos son funciones `async` que toman el objeto de
+solicitud como su argumento y retornan una promesa que se resuelve en un
+objeto que describe la respuesta.
 
 ```{includeCode: ">code/file_server.js"}
 const {createServer} = require("http");
 
-const methods = Object.create(null);
+const metodos = Object.create(null);
 
-createServer((request, response) => {
-  let handler = methods[request.method] || notAllowed;
-  handler(request)
+createServer((solicitud, respuesta) => {
+  let manejador = metodos[solicitud.method] || noPermitido;
+  manejador(solicitud)
     .catch(error => {
       if (error.status != null) return error;
       return {body: String(error), status: 500};
     })
     .then(({body, status = 200, type = "text/plain"}) => {
-       response.writeHead(status, {"Content-Type": type});
-       if (body && body.pipe) body.pipe(response);
-       else response.end(body);
+       respuesta.writeHead(status, {"Content-Type": type});
+       if (body && body.pipe) body.pipe(respuesta);
+       else respuesta.end(body);
     });
 }).listen(8000);
 
-async function notAllowed(request) {
+async function noPermitido(solicitud) {
   return {
     status: 405,
-    body: `Method ${request.method} not allowed.`
+    body: `Metodo ${solicitud.method} no permitido.`
   };
 }
 ```
 
 {{index "405 (HTTP status code)"}}
 
-This starts a server that just returns 405 error responses, which is
-the code used to indicate that the server refuses to handle a given
-method.
+Este código inicia un servidor que solo retorna respuestas de error con
+el código 405, el cual es el código utilizado para indicar que el servidor
+se niega a manejar un método determinado.
 
 {{index "500 (HTTP status code)", "error handling", "error response"}}
 
-When a request handler's promise is rejected, the `catch` call
-translates the error into a response object, if it isn't one already, so
-that the server can send back an error response to inform the client
-that it failed to handle the request.
+Cuando se rechaza la promesa de un manejador de solicitud, la llamada a `catch`
+traduce el error en un objeto de respuesta, si este no es un objeto aún, de manera
+que el servidor pueda enviar una respuesta de error para informarle al cliente
+que no pudo manejar la solicitud.
 
 {{index "200 (HTTP status code)", "Content-Type header"}}
 
-The `status` field of the response description may be omitted, in
-which case it defaults to 200 (OK). The content type, in the `type`
-property, can also be left off, in which case the response is assumed
-to be plain text.
+El campo `status` de la descripción de la respuesta puede ser omitido, en
+cuyo caso se utiliza el valor predeterminado de 200 (OK). El tipo de contenido,
+en la propiedad `type`, también se puede dejar fuera, en cuyo caso se asume que
+la respuesta es texto simple ("text/plain" en inglés).
 
 {{index "end method", "pipe method", stream}}
 
-When the value of `body` is a ((readable stream)), it will have a
-`pipe` method that is used to forward all content from a readable
-stream to a ((writable stream)). If not, it is assumed to be either
-`null` (no body), a string, or a buffer, and it is passed directly to the
-((response))'s `end` method.
+Cuando el valor de `body` es un ((flujo legible)), este tendrá un
+método `pipe` que es usado para reenviar todo el contenido desde un flujo legible
+a un ((flujo escribible)). Si no lo es, se asume que este es
+`null` (sin cuerpo), un string o un búfer, y se pasa directamente al
+método `end` de la respuesta.
 
 {{index [path, URL], "urlToPath function", "url package", parsing, [escaping, "in URLs"], "decodeURIComponent function", "startsWith method"}}
 
-To figure out which file path corresponds to a request URL, the
-`urlPath` function uses Node's built-in `url` module to parse the URL.
-It takes its pathname, which will be something like `"/file.txt"`,
-decodes that to get rid of the `%20`-style escape codes, and resolves
-it relative to the program's working directory.
+Para averiguar cual es la ruta de archivo que le corresponde al URL de una solicitud, la
+La función `rutaURL` utiliza el módulo `url` incorporado en Node para analizar
+la URL. Esta toma su ruta de acceso, que será algo como `"/archivo.txt"`,
+la decodifica para deshacerse de los códigos de escape al estilo `%20`, y
+resuelve la ruta relativamente al directorio en donde el programa trabaja.
 
 ```{includeCode: ">code/file_server.js"}
 const {parse} = require("url");
 const {resolve, sep} = require("path");
 
-const baseDirectory = process.cwd();
+const directorioBase = process.cwd();
 
-function urlPath(url) {
+function rutaURL(url) {
   let {pathname} = parse(url);
-  let path = resolve(decodeURIComponent(pathname).slice(1));
-  if (path != baseDirectory &&
-      !path.startsWith(baseDirectory + sep)) {
-    throw {status: 403, body: "Forbidden"};
+  let ruta = resolve(decodeURIComponent(pathname).slice(1));
+  if (ruta != directorioBase &&
+      !ruta.startsWith(directorioBase + sep)) {
+    throw {status: 403, body: "Prohibido"};
   }
-  return path;
+  return ruta;
 }
 ```
 
-As soon as you set up a program to accept network requests, you have
-to start worrying about ((security)). In this case, if we aren't
-careful, it is likely that we'll accidentally expose our whole ((file
-system)) to the network.
+Tan pronto como configuras un programa para aceptar solicitudes de red, tienes
+que empezar a preocuparte por la ((seguridad)). En este caso, si no somos lo
+suficientemente cuidadosos, es posible que expongamos accidentalmente
+todo nuestro ((sistema de archivos)) en la red.
 
-File paths are strings in Node. To map such a string to an actual
-file, there is a nontrivial amount of interpretation going on. Paths
-may, for example, include `../` to refer to a parent directory. So
-one obvious source of problems would be requests for paths like
-`/../secret_file`.
+Las rutas de archivos son strings en Node. Para convertir tal string en un
+archivo real, hay una cantidad no trivial de interpretación en marcha. Las rutas
+pueden, por ejemplo, incluir `../` para referirse a un directorio padre. Asi que
+una fuente obvia de problemas serían solicitudes por rutas como
+`/../archivo_secreto`.
 
 {{index "path package", "resolve function", "cwd function", "process object", "403 (HTTP status code)", "sep binding", "backslash character", "slash character"}}
 
-To avoid such problems, `urlPath` uses the `resolve` function from the
-`path` module, which resolves relative paths. It then verifies that
-the result is _below_ the working directory. The `process.cwd`
-function (where `cwd` stands for "current working directory") can be
-used to find this working directory. The `sep` variable from the
-`path` package is the system's path separator—a backslash on Windows
-and a forward slash on most other systems. When the path doesn't start
-with the base directory, the function throws an error response object,
-using the HTTP status code indicating that access to the resource is
-forbidden.
+Para evitar tales problemas, `rutaURL` utiliza la función `resolve` del
+módulo `path`, que resuelve rutas relativas. Esta entonces verifica que
+el resultado este _debajo_ del directorio de trabajo. La función `process.cwd`
+(donde `cwd` significa "current working directory" o "directorio de trabajo actual")
+puede ser utilizada para encontrar este directorio de trabajo. La variable `sep` del
+paquete `path` es el separador de rutas en el sistema—una barra invertida ("\\") en Windows
+y una barra diagonal hacia adelante ("/") en la mayoría de los otros sistemas.
+Cuando la ruta no comienza con el directorio base, la función lanza un
+objeto de respuesta de error, utilizando el código de estado HTTP que indica
+que el acceso al recurso esta prohibido (403).
 
 {{index "file server example", "Node.js", "GET method"}}
 
-We'll set up the `GET` method to return a list of ((file))s when
-reading a ((directory)) and to return the file's content when reading
-a regular file.
+Configuraremos el método `GET` para retornar una lista de ((archivo))s cuando
+sea lea un ((directorio)) y para retornar el contenido del archivo cuando se lea
+un archivo regular.
 
 {{index "media type", "Content-Type header", "mime package"}}
 
-One tricky question is what kind of `Content-Type` header we should
-set when returning a file's content. Since these files could be
-anything, our server can't simply return the same content type for all
-of them. ((NPM)) can help us again here. The `mime` package (content
-type indicators like `text/plain` are also called _((MIME type))s_)
-knows the correct type for a large number of ((file extension))s.
+Una pregunta difícil, es decidir qué tipo de encabezado `Content-Type` deberíamos de
+establecer al retornar el contenido de un archivo. Dado que los archivos
+podrían ser cualquier cosa, nuestro servidor no puede simplemente devolver
+el mismo tipo de contenido para todos ellos. ((NPM)) puede sernos de ayuda
+nuevamente aquí. El paquete `mime` (los indicadores de tipo de contenido como
+`text/plain` también son llamados _((tipos MIME))_) conoce el tipo correcto
+para un gran número de ((extensiones de archivos)).
 
 {{index "require function", "npm program"}}
 
-The following `npm` command, in the directory where the server script
-lives, installs a specific version of `mime`:
+El siguiente comando `npm`, en el directorio en donde el script del servidor
+vive, instala una versión específica de `mime`:
 
 ```{lang: null}
 $ npm install mime@2.2.0
@@ -859,367 +864,368 @@ $ npm install mime@2.2.0
 
 {{index "404 (HTTP status code)", "stat function"}}
 
-When a requested file does not exist, the correct HTTP status code to
-return is 404. We'll use the `stat` function, which looks up
-information about a file, to find out both whether the ((file)) exists
-and whether it is a ((directory)).
+Cuando un archivo solicitado no existe, el código de estado HTTP correcto a
+a retornar es 404. Usaremos la función `stat`, que busca
+información acerca de un archivo, para averiguar si el ((archivo)) existe
+y si este es un ((directorio)).
 
 ```{includeCode: ">code/file_server.js"}
 const {createReadStream} = require("fs");
 const {stat, readdir} = require("fs").promises;
 const mime = require("mime");
 
-methods.GET = async function(request) {
-  let path = urlPath(request.url);
-  let stats;
+metodos.GET = async function(solicitud) {
+  let ruta = rutaURL(solicitud.url);
+  let estatus;
   try {
-    stats = await stat(path);
+    estatus = await stat(ruta);
   } catch (error) {
     if (error.code != "ENOENT") throw error;
-    else return {status: 404, body: "File not found"};
+    else return {status: 404, body: "Archivo no encontrado"};
   }
-  if (stats.isDirectory()) {
-    return {body: (await readdir(path)).join("\n")};
+  if (estatus.isDirectory()) {
+    return {body: (await readdir(ruta)).join("\n")};
   } else {
-    return {body: createReadStream(path),
-            type: mime.getType(path)};
+    return {body: createReadStream(ruta),
+            type: mime.getType(ruta)};
   }
 };
 ```
 
 {{index "createReadStream function", "asynchronous programming", "error handling", "ENOENT (status code)", "Error type", inheritance}}
 
-Because it has to touch the disk and thus might take a while, `stat`
-is asynchronous. Since we're using promises rather than callback
-style, it has to be imported from `promises` instead of directly from
-`fs`.
+Dado que tiene que tocar el disco duro y, por lo tanto, podría tomar algo de tiempo,
+`stat` es asíncrono. Ya que estamos usando promesas en lugar del estilo de
+devolución de llamadas, esta función debe ser importada desde `promises` en
+lugar de `fs` directamente.
 
-When the file does not exist, `stat` will throw an error object with a
-`code` property of `"ENOENT"`. These somewhat obscure,
-((Unix))-inspired codes are how you recognize error types in Node.
+Cuando el archivo no existe, `stat` lanzará un objeto de error con una
+propiedad `code` de `"ENOENT"`. Estos códigos algo oscuros,
+inspirados por ((Unix)), son la forma en que reconoces tipos de error en Node.
 
 {{index "Stats type", "stat function", "isDirectory method"}}
 
-The `stats` object returned by `stat` tells us a number of things
-about a ((file)), such as its size (`size` property) and its
-((modification date)) (`mtime` property). Here we are interested in
-the question of whether it is a ((directory)) or a regular file, which
-the `isDirectory` method tells us.
+El objeto `estatus` retornado por `stat` nos dice una serie de cosas
+acerca de un ((archivo)), como su tamaño (propiedad `size`) y su
+((fecha de modificación)) (propiedad `mtime`). Aquí estamos interesados ​​en
+averiguar si este es un ((directorio)) o un archivo regular, para lo cual podemos
+utilizar el método `isDirectory`.
 
 {{index "readdir function"}}
 
-We use `readdir` to read the array of files in a ((directory)) and
-return it to the client. For normal files, we create a readable stream
-with `createReadStream` and return that as the body, along with the
-content type that the `mime` package gives us for the file's name.
+Usamos `readdir` para leer el array de archivos en un ((directorio)) y
+retornarselo al cliente. Para archivos normales, creamos un flujo legible
+con `createReadStream` y devolvemos eso como el cuerpo, junto con el
+tipo de contenido que el paquete `mime` nos da para el nombre del archivo.
 
 {{index "Node.js", "file server example", "DELETE method", "rmdir function", "unlink function"}}
 
-The code to handle `DELETE` requests is slightly simpler.
+El código para manejar las solicitudes de `DELETE` es un poco más sencillo.
 
 ```{includeCode: ">code/file_server.js"}
 const {rmdir, unlink} = require("fs").promises;
 
-methods.DELETE = async function(request) {
-  let path = urlPath(request.url);
-  let stats;
+metodos.DELETE = async function(solicitud) {
+  let ruta = rutaURL(solicitud.url);
+  let estatus;
   try {
-    stats = await stat(path);
+    estatus = await stat(ruta);
   } catch (error) {
     if (error.code != "ENOENT") throw error;
     else return {status: 204};
   }
-  if (stats.isDirectory()) await rmdir(path);
-  else await unlink(path);
+  if (estatus.isDirectory()) await rmdir(ruta);
+  else await unlink(ruta);
   return {status: 204};
 };
 ```
 
 {{index "204 (HTTP status code)", "body (HTTP)"}}
 
-When an ((HTTP)) ((response)) does not contain any data, the status
-code 204 ("no content") can be used to indicate this. Since the
-response to deletion doesn't need to transmit any information beyond
-whether the operation succeeded, that is a sensible thing to return
-here.
+Cuando una ((respuesta)) ((HTTP)) no contiene ningún dato, el código de estado
+204 ("sin contenido") puede ser usado para indicar esto. Dado que la respuesta
+a la eliminación no necesita transmitir ninguna información más allá de
+si la operación tuvo éxito, es algo razonable para retornar en este metodo.
 
 {{index idempotence, "error response"}}
 
-You may be wondering why trying to delete a nonexistent file returns a
-success status code, rather than an error. When the file that is being
-deleted is not there, you could say that the request's objective is
-already fulfilled. The ((HTTP)) standard encourages us to make
-requests _idempotent_, which means that making the same request
-multiple times produces the same result as making it once. In a way,
-if you try to delete something that's already gone, the effect you
-were trying to do has been achieved—the thing is no longer there.
+Puede que te estes preguntando por qué al intentar eliminar un archivo inexistente,
+se devuelve un código de estado de éxito, en lugar de un error. Cuando el
+archivo que está siendo eliminado no está allí, se podría decir que el
+objetivo de la solicitud ya ha sido cumplido. El estándar ((HTTP)) nos anima a hacer
+que las solicitudes sean _idempotentes_, lo que significa que hacer la misma solicitud
+multiples veces produce siempre el mismo resultado que el hacerla una sola vez. En cierto sentido,
+si intentas eliminar algo que ya ha sido eliminado, el efecto
+que estas intentado hacer ya se ha logrado—el archivo ya no está allí.
 
 {{index "file server example", "Node.js", "PUT method"}}
 
-This is the handler for `PUT` requests:
+Este es el controlador para las solicitudes `PUT`:
 
 ```{includeCode: ">code/file_server.js"}
 const {createWriteStream} = require("fs");
 
-function pipeStream(from, to) {
-  return new Promise((resolve, reject) => {
-    from.on("error", reject);
-    to.on("error", reject);
-    to.on("finish", resolve);
-    from.pipe(to);
+function conductoDeFlujo(desde, hacia) {
+  return new Promise((resolver, rechazar) => {
+    desde.on("error", rechazar);
+    hacia.on("error", rechazar);
+    hacia.on("finish", resolver);
+    desde.pipe(hacia);
   });
 }
 
-methods.PUT = async function(request) {
-  let path = urlPath(request.url);
-  await pipeStream(request, createWriteStream(path));
+metodos.PUT = async function(solicitud) {
+  let ruta = rutaURL(solicitud.url);
+  await conductoDeFlujo(solicitud, createWriteStream(ruta));
   return {status: 204};
 };
 ```
 
 {{index overwriting, "204 (HTTP status code)", "error event", "finish event", "createWriteStream function", "pipe method", stream}}
 
-We don't need to check whether the file exists this time—if it does,
-we'll just overwrite it. We again use `pipe` to move data from a
-readable stream to a writable one, in this case from the request to
-the file. But since `pipe` isn't written to return a promise, we have
-to write a wrapper, `pipeStream`, that creates a promise around the
-outcome of calling `pipe`.
+Esta vez no necesitaremos verificar si el archivo existe—si es así,
+simplemente lo sobrescribiremos. Usamos nuevamente `pipe` para mover datos desde un
+flujo legible a uno de escritura, en este caso desde la solicitud hacia
+el archivo. Pero como `pipe` no está escrito para devolver una promesa, tenemos
+que escribir una envoltura, `conductoDeFlujo`, que crea una promesa alrededor del
+resultado de llamar a `pipe`.
 
 {{index "error event", "finish event"}}
 
-When something goes wrong when opening the file, `createWriteStream`
-will still return a stream, but that stream will fire an `"error"`
-event. The output stream to the request may also fail, for example if
-the network goes down. So we wire up both streams' `"error"` events to
-reject the promise. When `pipe` is done, it will close the output
-stream, which causes it to fire a `"finish"` event. That's the point
-where we can successfully resolve the promise (returning nothing).
+Cuando algo sale mal al abrir el archivo, `createWriteStream`
+todavía retornara un flujo, pero ese flujo disparará un evento de `"error"`.
+El flujo de salida a la solicitud también puede fallar, por ejemplo, si
+la red se cae. Por lo tanto, configuramos los eventos de `"error"` de ambos
+flujos para que rechazen la promesa. Cuando `pipe` finaliza, este cerrará el
+flujo de salida, lo que hace que se dispare un evento de `"finish"` ("finalizar").
+Ese es el punto en donde podemos resolver exitosamente la promesa (retornando nada).
 
 {{index download, "file server example", "Node.js"}}
 
-The full script for the server is available at
+El script completo para el servidor está disponible en
 [_https://eloquentjavascript.net/code/file_server.js_](https://eloquentjavascript.net/code/file_server.js).
-You can download that and, after installing its dependencies, run it
-with Node to start your own file server. And, of course, you can modify
-and extend it to solve this chapter's exercises or to experiment.
+Puedes descargarlo y, después de instalar sus dependencias, ejecutarlo
+con Node para iniciar tu propio servidor de archivos. Y, por supuesto, puedes modificarlo
+y extenderlo para resolver los ejercicios de este capítulo o simplemente para experimentar
+por tu cuenta.
 
 {{index "body (HTTP)", "curl program"}}
 
-The command line tool `curl`, widely available on ((Unix))-like
-systems (such as macOS and Linux), can be used to make ((HTTP))
-((request))s. The following session briefly tests our server. The `-X`
-option is used to set the request's ((method)), and `-d` is used to
-include a request body.
+La herramienta de línea de comandos `curl`, ampliamente disponible en sistemas
+((Unix)) (como macOS y Linux), se pueden utilizar para realizar ((peticiones))
+((HTTP)). La siguiente sesión prueba brevemente nuestro servidor. La opción `-X`
+se usa para establecer el ((método)) de la solicitud, y `-d` es usado para
+incluir un cuerpo de solicitud.
 
 ```{lang: null}
-$ curl http://localhost:8000/file.txt
-File not found
-$ curl -X PUT -d hello http://localhost:8000/file.txt
-$ curl http://localhost:8000/file.txt
-hello
-$ curl -X DELETE http://localhost:8000/file.txt
-$ curl http://localhost:8000/file.txt
-File not found
+$ curl http://localhost:8000/archivo.txt
+Archivo no encontrado
+$ curl -X PUT -d hola http://localhost:8000/archivo.txt
+$ curl http://localhost:8000/archivo.txt
+hola
+$ curl -X DELETE http://localhost:8000/archivo.txt
+$ curl http://localhost:8000/archivo.txt
+Archivo no encontrado
 ```
 
-The first request for `file.txt` fails since the file does not exist
-yet. The `PUT` request creates the file, and behold, the next request
-successfully retrieves it. After deleting it with a `DELETE` request,
-the file is again missing.
+La primera solicitud por `archivo.txt` falla ya que el archivo no existe
+todavía. La solicitud `PUT` crea el archivo, y ¡sorpresa!, la siguiente solicitud
+lo recupera con éxito. Después de borrarlo con una solicitud `DELETE`,
+el archivo no es encontrado nuevamente.
 
-## Summary
+## Resumen
 
 {{index "Node.js"}}
 
-Node is a nice, small system that lets us run JavaScript in a
-nonbrowser context. It was originally designed for network tasks to
-play the role of a _node_ in a network. But it lends itself to all
-kinds of scripting tasks, and if writing JavaScript is something you
-enjoy, automating tasks with Node works well.
+Node es un buen y pequeño sistema que nos permite ejecutar JavaScript en un
+contexto que no involucre navegadores. Este fue diseñado originalmente
+para tareas de red para desempeñar el papel de un _nodo_ en una red.
+Pero se presta bien para realizar cualquier tipo de tareas de scripting,
+y si escribir JavaScript es algo que disfrutas, automatizar tareas con Node
+es algo que funciona bien.
 
-NPM provides packages for everything you can think of (and quite a few
-things you'd probably never think of), and it allows you to fetch and
-install those packages with the `npm` program. Node comes with a
-number of built-in modules, including the `fs` module for working with
-the file system and the `http` module for running HTTP servers and
-making HTTP requests.
+NPM proporciona paquetes para cualquier cosa que puedas imaginar (y bastantes
+cosas en las que probablemente nunca habrías pensado), y te permite buscar e
+instalar esos paquetes con el programa `npm`. Node viene con un
+número de módulos incorporados, incluyendo el módulo `fs` para trabajar con
+el sistema de archivos y el módulo `http` para ejecutar servidores HTTP y
+hacer peticiones HTTP.
 
-All input and output in Node is done asynchronously, unless you
-explicitly use a synchronous variant of a function, such as
-`readFileSync`. When calling such asynchronous functions, you provide
-callback functions, and Node will call them with an error value and
-(if available) a result when it is ready.
+Todas las entradas y salidas en Node se realizan asíncronamente, a menos que
+uses explícitamente una variante síncrona de una función, como
+`readFileSync`. Al llamar a tales funciones asíncronas, tienes que proporcionarles
+funciones de devolución de llamada, y Node las llamará con un valor de error y
+(si está disponible) un resultado cuando la operación sea completada.
 
-## Exercises
+## Ejercicios
 
-### Search tool
+### Herramienta de búsqueda
 
 {{index grep, search, "search tool (exercise)"}}
 
-On ((Unix)) systems, there is a command line tool called `grep` that
-can be used to quickly search files for a ((regular expression)).
+En los sistemas ((Unix)), hay una herramienta en la línea de comandos llamada `grep` que
+puede ser usada para buscar archivos rápidamente utilizando una ((expresión regular)).
 
-Write a Node script that can be run from the ((command line)) and acts
-somewhat like `grep`. It treats its first command line argument as a
-regular expression and treats any further arguments as files to search. It
-should output the names of any file whose content matches the regular
-expression.
+Escribe un script de Node que se pueda ejecutar desde la ((línea de comandos)), que funcione
+similarmente a `grep`. Este script tratara su primer argumento en la línea de comandos como una
+expresión regular y cualquier numero de argumentos adicionales seran tratados como archivos en donde buscar.
+Deberas mostrar los nombres de cualquier archivo cuyo contenido coincida con la expresión regular.
 
-When that works, extend it so that when one of the arguments is a
-((directory)), it searches through all files in that directory and its
-subdirectories.
+Cuando ese script funcione, extiéndelo para que cuando uno de los argumentos sea un
+((directorio)), busque a través de todos los archivos en ese directorio y sus
+subdirectorios.
 
 {{index "asynchronous programming", "synchronous programming"}}
 
-Use asynchronous or synchronous file system functions as you see fit.
-Setting things up so that multiple asynchronous actions are requested
-at the same time might speed things up a little, but not a huge
-amount, since most file systems can read only one thing at a time.
+Utiliza las funciones del sistema de archivos asíncronas o síncronas como mejor te parezca.
+Configurar las cosas para que múltiples acciones asíncronas sean solicitadas
+al mismo tiempo podría acelerar las cosas un poco, pero no por mucho,
+debido a que la mayoría de los sistemas de archivos solo pueden leer una cosa a la vez.
 
 {{hint
 
 {{index "RegExp class", "search tool (exercise)"}}
 
-Your first command line argument, the ((regular expression)), can be
-found in `process.argv[2]`. The input files come after that. You can
-use the `RegExp` constructor to go from a string to a regular
-expression object.
+Tu primer argumento en la línea de comandos, la ((expresión regular)), puede ser
+encontrada en `process.argv[2]`. Los archivos de entrada vienen después de el.
+Puedes usar el constructor `RegExp` para convertir un string en un objeto
+de expresión regular.
 
 {{index "readFileSync function"}}
 
-Doing this synchronously, with `readFileSync`, is more
-straightforward, but if you use `fs.promises` again to get
-promise-returning functions and write an `async` function, the code
-looks similar.
+Hacer esto de manera síncrona, con `readFileSync`, es más
+directo, pero si usas `fs.promises` nuevamente para obtener
+funciones que retornen promesas y escribiendo funciones `async`,
+el código entre las dos maneras luce similar.
 
 {{index "stat function", "statSync function", "isDirectory method"}}
 
-To figure out whether something is a directory, you can again use
-`stat` (or `statSync`) and the stats object's `isDirectory` method.
+Para averiguar si algo es un directorio, puedes usar de nuevo
+`stat` (o `statSync`) y el método `isDirectory` del objeto de estatus.
 
 {{index "readdir function", "readdirSync function"}}
 
-Exploring a directory is a branching process. You can do it either
-by using a recursive function or by keeping an array of work (files that
-still need to be explored). To find the files in a directory, you can
-call `readdir` or `readdirSync`. The strange
-capitalization—Node's file system function naming is loosely based on
-standard Unix functions, such as `readdir`, that are all lowercase,
-but then it adds `Sync` with a capital letter.
+Explorar un directorio es un proceso de ramificación. Puedes hacerlo ya sea
+mediante el uso de una función recursiva o manteniendo un array de trabajo (archivos que
+todavía tienen que ser explorados). Para encontrar los archivos en un directorio, puedes
+llamar a `readdir` o `readdirSync`. El extraño uso de mayúsculas—la forma de nombrar
+funciones del sistema de archivos en Node, esta basada en
+funciones estándar de Unix, como `readdir`, que son todas en minúsculas,
+pero luego agrega `Sync` con una letra mayúscula al comienzo de la palabra.
 
-To go from a filename read with `readdir` to a full path name, you
-have to combine it with the name of the directory, putting a ((slash
-character)) (`/`) between them.
+Para pasar de un nombre de archivo leído con `readdir` a un nombre de ruta completo,
+tienes que combinarlo con el nombre del directorio, poniendo una ((barra
+diagonal)) (`/`) entre ellos.
 
 hint}}
 
-### Directory creation
+### Creación de directorios
 
 {{index "file server example", "directory creation (exercise)", "rmdir function"}}
 
-Though the `DELETE` method in our file server is able to delete
-directories (using `rmdir`), the server currently does not provide any
-way to _create_ a ((directory)).
+Aunque el método `DELETE` en nuestro servidor de archivos es capaz de eliminar
+directorios (usando `rmdir`), el servidor actualmente no proporciona ninguna
+manera de _crear_ un ((directorio)).
 
 {{index "MKCOL method", "mkdir function"}}
 
-Add support for the `MKCOL` method ("make column"), which should create
-a directory by calling `mkdir` from the `fs` module. `MKCOL` is not a
-widely used HTTP method, but it does exist for this same purpose in
-the _((WebDAV))_ standard, which specifies a set of conventions on top
-of ((HTTP)) that make it suitable for creating documents.
-
-```{hidden: true, includeCode: ">code/file_server.js"}
-const {mkdir} = require("fs").promises;
-
-methods.MKCOL = async function(request) {
-  let path = urlPath(request.url);
-  let stats;
-  try {
-    stats = await stat(path);
-  } catch (error) {
-    if (error.code != "ENOENT") throw error;
-    await mkdir(path);
-    return {status: 204};
-  }
-  if (stats.isDirectory()) return {status: 204};
-  else return {status: 400, body: "Not a directory"};
-};
-```
+Añade soporte para el método `MKCOL` ("make column" o "crear columna"), que debería
+de crear un directorio utilizando una llamada al metodo `mkdir` del módulo `fs`. `MKCOL` no es un
+método HTTP ampliamente utilizado, pero existe para este mismo propósito en
+el estándar _((WebDAV))_, que especifica un conjunto de convenciones arriba
+de ((HTTP)) que lo hacen adecuado para crear documentos.
 
 {{hint
 
 {{index "directory creation (exercise)", "file server example", "MKCOL method", "mkdir function", idempotency, "400 (HTTP status code)"}}
 
-You can use the function that implements the `DELETE` method as a
-blueprint for the `MKCOL` method. When no file is found, try to create
-a directory with `mkdir`. When a directory exists at that path, you
-can return a 204 response so that directory creation requests are
-idempotent. If a nondirectory file exists here, return an error code.
-Code 400 ("bad request") would be appropriate.
+```{hidden: false, includeCode: ">code/file_server.js"}
+const {mkdir} = require("fs").promises;
+
+metodos.MKCOL = async function(solicitud) {
+  let ruta = rutaURL(solicitud.url);
+  let estatus;
+  try {
+    estatus = await stat(ruta);
+  } catch (error) {
+    if (error.code != "ENOENT") throw error;
+    await mkdir(ruta);
+    return {status: 204};
+  }
+  if (estatus.isDirectory()) return {status: 204};
+  else return {status: 400, body: "No es un directorio"};
+};
+```
+
+Puedes usar la función que implementa el método `DELETE` como una base
+para el método `MKCOL`. Cuando no se encuentra ningún archivo, intentamos crear
+un directorio con `mkdir`. Cuando existe un directorio en esa ruta,
+puedes devolver una respuesta 204 para que las solicitudes de creación de directorios
+sean idempotentes. Si existe un archivo que no es un directorio aquí,
+se retorna un código de error. El código 400 ("solicitud incorrecta") es apropiado
+para esto.
 
 hint}}
 
-### A public space on the web
+### Un espacio público en la web.
 
 {{index "public space (exercise)", "file server example", "Content-Type header", website}}
 
-Since the file server serves up any kind of file and even includes the
-right `Content-Type` header, you can use it to serve a website. Since
-it allows everybody to delete and replace files, it would be an
-interesting kind of website: one that can be modified, improved, and
-vandalized by everybody who takes the time to create the right HTTP
-request.
+Dado que el servidor de archivos puede servir cualquier tipo de archivo e incluso incluye el
+encabezado `Content-Type` correcto, puedes usarlo para servir un sitio web. Ya
+que le permite a cualquier persona eliminar y reemplazar archivos, sería un
+tipo de sitio web interesante: uno que puede ser modificado, mejorado y
+destrozado por todos los que se tomen el tiempo de crear la solicitud
+HTTP correcta.
 
-Write a basic ((HTML)) page that includes a simple JavaScript file.
-Put the files in a directory served by the file server and open them
-in your browser.
+Escribe una página básica ((HTML)) que incluya un archivo de JavaScript simple.
+Pon los archivos en un directorio servido por el servidor de archivos y ábrelos
+en tu navegador.
 
-Next, as an advanced exercise or even a ((weekend project)), combine
-all the knowledge you gained from this book to build a more
-user-friendly interface for modifying the website—from _inside_ the
-website.
+A continuación, como un ejercicio avanzado o incluso como un
+((proyecto de fin de semana)), combina todo el conocimiento que obtuviste
+de este libro para construir una interfaz más fácil de usar, de manera
+que se pueda modificar el sitio web—desde _adentro_ del sitio web.
 
-Use an HTML ((form)) to edit the content of the files that make up the
-website, allowing the user to update them on the server by using HTTP
-requests, as described in [Chapter ?](http).
+Usa un ((formulario)) HTML para editar el contenido de los archivos que conforman el
+sitio web, permitiéndole al usuario actualizarlos en el servidor utilizando
+solicitudes HTTP, como aprendiste en el [Capítulo 18](http).
 
-Start by making only a single file editable. Then make it so that the
-user can select which file to edit. Use the fact that our file server
-returns lists of files when reading a directory.
+Comienza haciendo que un solo archivo sea editable. Entonces haz que el
+usuario pueda seleccionar qué archivo editar. Utiliza el hecho de que
+nuestro servidor de archivos retorna listas de archivos al leer un directorio.
 
 {{index overwriting}}
 
-Don't work directly in the code exposed by the file server since if
-you make a mistake, you are likely to damage the files there. Instead,
-keep your work outside of the publicly accessible directory and copy
-it there when testing.
+No trabajes directamente en el código expuesto por el servidor de archivos,
+ya que si cometes un error, es probable que dañes los archivos que estan allí.
+En lugar de eso, manten tu trabajo afuera del directorio de acceso público y
+copialo allí cuando hagas prueba.
 
 {{hint
 
 {{index "file server example", "textarea (HTML tag)", "fetch function", "relative path", "public space (exercise)"}}
 
-You can create a `<textarea>` element to hold the content of the file
-that is being edited. A `GET` request, using `fetch`, can retrieve the
-current content of the file. You can use relative URLs like
-_index.html_, instead of
+Puedes crear un elemento `<textarea>` para mantener el contenido del archivo
+que se esta editando. Una solicitud `GET`, usando `fetch`, puede recuperar el
+contenido actual de un archivo. Puedes usar URLs relativas como
+_index.html_, en lugar de
 [_http://localhost:8000/index.html_](http://localhost:8000/index.html),
-to refer to files on the same server as the running script.
+para referirte a los archivos en el mismo servidor que el script en ejecución.
 
 {{index "form (HTML tag)", "submit event", "PUT method"}}
 
-Then, when the user clicks a button (you can use a `<form>` element
-and `"submit"` event), make a `PUT` request to the same URL, with the
-content of the `<textarea>` as request body, to save the file.
+Entonces, cuando el usuario haga clic en un botón (puedes usar un elemento `<form>`
+y el evento `"submit"`), realiza una solicitud `PUT` a la misma URL, con el
+contenido del `<textarea>` como el cuerpo de la solicitud, para guardar el archivo.
 
 {{index "select (HTML tag)", "option (HTML tag)", "change event"}}
 
-You can then add a `<select>` element that contains all the files in
-the server's top ((directory)) by adding `<option>` elements
-containing the lines returned by a `GET` request to the URL `/`. When
-the user selects another file (a `"change"` event on the field), the
-script must fetch and display that file. When saving a file, use the
-currently selected filename.
+Luego puedes agregar un elemento `<select>` que contenga todos los archivos en
+el ((directorio)) superior del servidor al agregar elementos `<option>`
+que contengan las líneas retornadas por una solicitud `GET` a la URL `/`. Cuando
+el usuario seleccione otro archivo (un evento `"change"` en el campo), el
+script debe buscar y mostrar ese archivo. Al guardar un archivo, usa el nombre
+del archivo seleccionado actualmente.
 
 hint}}
